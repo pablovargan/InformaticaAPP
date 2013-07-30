@@ -32,6 +32,7 @@ namespace InformaticaAPP
             Dispatcher.BeginInvoke(delegate()
             {
                 DlsiListBox.ItemsSource = App.ViewModel.Items;
+                PostListBox.ItemsSource = App.ViewModel.Posts;
             });
         }
 
@@ -55,14 +56,17 @@ namespace InformaticaAPP
             if (!App.ViewModel.IsDataLoaded)
             {
                 //Muestro el progressBar de cargando notas
-                App.ViewModel.LoadData();
+                App.ViewModel.LoadDataDLSI();
+                App.ViewModel.LoadDataBLOG();
                 BarraProgreso.IsVisible = false;
             }
         }
+
+      
         //Evento para actualizar el rss del dlsi
         private void Actualizar_Click(object sender, EventArgs e)
         {
-            App.ViewModel.LoadData();
+            App.ViewModel.LoadDataDLSI();
         }
     }
 }

@@ -15,6 +15,7 @@ using Microsoft.Phone.Tasks;
 using System.Text.RegularExpressions;
 using InformaticaAPP.ViewModels;
 
+
 namespace InformaticaAPP
 {
     public partial class DetallesNotas : PhoneApplicationPage
@@ -49,6 +50,14 @@ namespace InformaticaAPP
             {
                 MessageBox.Show(ex.Message, "Unexpected Exception", MessageBoxButton.OK);
             }
+        }
+
+        //Evento para compartir en redes sociales la nota disponible
+        private void Compartir_Click(object sender, EventArgs e)
+        {
+            ShareMediaTask shareMedia = new ShareMediaTask();
+            //shareMedia.FilePath = this.PostActual();
+            shareMedia.Show();
         }
     }
 }

@@ -89,7 +89,8 @@ namespace InformaticaAPP
             // Asegurarse de que el estado de la aplicación se restaura adecuadamente
             if (!App.ViewModel.IsDataLoaded)
             {
-                App.ViewModel.LoadData();
+                App.ViewModel.LoadDataDLSI();
+                App.ViewModel.LoadDataBLOG();
             }
         }
 

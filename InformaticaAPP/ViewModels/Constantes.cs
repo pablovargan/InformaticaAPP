@@ -11,5 +11,6 @@ namespace InformaticaAPP.ViewModels
         public const string NuevasNotas = "Se han publicado nuevas notas";
         public const string URL_Web = "http://www.dlsi.ua.es/alumnes/index.cgi?id=cas";
         public const string compartirNota = " en el DLSI via @ginformaticaua";
+        public const string RssURL_Blog = "http://www.gradoinformaticaua.com/blog/feed/";
     }
 }

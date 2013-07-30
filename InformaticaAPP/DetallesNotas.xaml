@@ -38,4 +38,11 @@
         </Grid>
     </Grid>
 
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar x:Name="MainAppBar" IsVisible="True" IsMenuEnabled="True" Mode="Minimized">
+            <shell:ApplicationBarIconButton x:Name="compartir" Click="Compartir_Click" IconUri="/Imagenes/Reload_64x64.png" Text="Compartir"/>
+        </shell:ApplicationBar>
+
+    </phone:PhoneApplicationPage.ApplicationBar>
+
 </phone:PhoneApplicationPage>

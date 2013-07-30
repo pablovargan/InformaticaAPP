@@ -27,14 +27,17 @@ namespace InformaticaAPP
         public MainViewModel()
         {
             this.Items = new ObservableCollection<DlsiVM>();
+            this.Posts = new ObservableCollection<PostVM>();
         }
 
         /// <summary>
         /// Colección para objetos ItemViewModel.
         /// </summary>
         public ObservableCollection<DlsiVM> Items { get; private set; }
+        public ObservableCollection<PostVM> Posts { get; private set; }
 
         private string _rssUrl_DLSI = Constantes.RssURL_DLSI;
+        private string _postUrl_Blog = Constantes.RssURL_Blog;
         /// <summary>
         /// Url de la fuente RSS de la que se cargan datos
         /// </summary>
@@ -51,6 +54,22 @@ namespace InformaticaAPP
                 {
                     _rssUrl_DLSI = value;
                     NotifyPropertyChanged("RssUrl");
+                }
+            }
+        }
+
+        public string PostUrl
+        {
+            get
+            {
+                return _postUrl_Blog;
+            }
+            set
+            {
+                if (value != _postUrl_Blog)
+                {
+                    _postUrl_Blog = value;
+                    NotifyPropertyChanged("PostUrl");
                 }
             }
         }
@@ -72,7 +91,7 @@ namespace InformaticaAPP
         /// <summary>
         /// Descarga y añade los elementos de DlsiViewModel a partir de la fuente XML
         /// </summary>
-        public void LoadData()
+        public void LoadDataDLSI()
         {
             try
             {
@@ -85,6 +104,22 @@ namespace InformaticaAPP
             }
             catch (Exception ex)
             {
+                MessageBox.Show(ex.Message, "Unexpected Exception", MessageBoxButton.OK);
+            }
+        }
+
+        public void LoadDataBLOG()
+        {
+            try
+            {
+                WebClient wc = new WebClient();
+                //Muestra los acentos correctamente
+                wc.Encoding = System.Text.Encoding.GetEncoding("ISO-8859-1");
+                //Llama al metodo para realizar la select de todos los items del RSS
+                wc.DownloadStringCompleted += wc_DownloadBlogXMLCompleted;
+                wc.DownloadStringAsync(new Uri(this._postUrl_Blog));
+            }
+            catch(Exception ex) {
                 MessageBox.Show(ex.Message, "Unexpected Exception", MessageBoxButton.OK);
             }
         }
@@ -108,6 +143,35 @@ namespace InformaticaAPP
                     //Vuelvo lo recogido en los items
                     //TODO: PARSEAR PARA ASIGNATURAS, PRIMERO-SEGUNDO-TERCERO-TODAS
                     this.Items = new ObservableCollection<DlsiVM>(postCollection);
+
+                    this.IsDataLoaded = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Unexpected Exception", MessageBoxButton.OK);
+            }
+        }
+
+        private void wc_DownloadBlogXMLCompleted(object sender, DownloadStringCompletedEventArgs e)
+        {
+            try
+            {
+                if (e.Error == null)
+                {
+                    XDocument postRSS_Blog = XDocument.Parse(e.Result, LoadOptions.None);
+                    var postCollection = from itemBlog in postRSS_Blog.Descendants("item")
+                                         select new PostVM
+                                         {
+                                             Titulo = itemBlog.Element("title").Value,
+                                             LinkURL = itemBlog.Element("link").Value,
+                                             //Autor = itemBlog.Element("dc:creator").Value
+                                             Fecha = DateTime.Parse(itemBlog.Element("pubDate").Value),
+                                             Descripcion = itemBlog.Element("description").Value
+                                         };
+                    //Vuelvo lo recogido en los items
+                    //TODO: PARSEAR PARA ASIGNATURAS, PRIMERO-SEGUNDO-TERCERO-TODAS
+                    this.Posts = new ObservableCollection<PostVM>(postCollection);
 
                     this.IsDataLoaded = true;
                 }
