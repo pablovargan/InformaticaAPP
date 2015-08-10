@@ -94,12 +94,12 @@ namespace InformaticaAPP.ViewModels
             }
         }
 
-        private string parsearDescripcion(string valor) 
-        {
-            // Obtiene el accent color del sistema
-            Color accentColor = (Color)Application.Current.Resources["PhoneAccentColor"];
+        //private string parsearDescripcion(string valor) 
+        //{
+        //    // Obtiene el accent color del sistema
+        //    Color accentColor = (Color)Application.Current.Resources["PhoneAccentColor"];
             
-        }
+        //}
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(String propertyName)
